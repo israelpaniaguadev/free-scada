@@ -5,5 +5,5 @@ For free scada development.
 * Data acquisition protocols services.
 * Human Machine Interface (HMI).
 
-## Redundancy
+## Redundancia
 * Protocolo para redundancias.
