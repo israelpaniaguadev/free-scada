@@ -14,7 +14,7 @@ easily without much effort. If the device is too complex, it can be broken down 
 can be modelled once and extended when needed.
 
 ### Integrations: Even the protocols can be modeled
-Even if we wire things via Ethernet RJ-45 or Serial Port RS-323, a bunch of bits are still a bunch of bits, nothing 
+Even if we wire things via Ethernet RJ-45 or Serial Port RS-232, a bunch of bits are still a bunch of bits, nothing 
 more than that. A protocol is just a set of rules that tells to every part in the communication what those bits aims 
 to communicate. Following the design philosophy of "model once, extend everywhere", a device model should be extended 
 with a protocol, breaking the limitations of the traditional modelling by adopting a composition/inheritance approach.
@@ -30,5 +30,5 @@ philosophy.
 
 ### License: FREE!
 What does a FREE SCADA means? It means to be fully documented, easily adaptable to fit the needs of every user and 
-fully transparent in its development. No more 
+fully transparent in its development. No more.
 
