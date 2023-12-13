@@ -5,12 +5,12 @@ import { State } from "./State";
 
 export class Device {
 	constructor(
-		private name: string,
-		private description: string,
-		private input: Line,
-		private output: Line,
-		private states: State[],
-		private signals: Signal[],
-		private alarms: Alarm[]
+		private name: string, // Name of the device.
+		private description: string, // A short description of what a device does.
+		private input: Line, // An input line reference. 
+		private output: Line, // An output line reference.
+		private states: State[], // A list of the possible states of the device.
+		private signals: Signal[], // A list of of the possible signals that the device can emit.
+		private alarms: Alarm[] // A list of the possible alarms the device can emit.
 	) { }
 };
