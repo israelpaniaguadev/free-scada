@@ -1,4 +1,8 @@
 const Text = ({ children }: { children?: React.ReactNode }) => {
+	if (!children) {
+		return <p></p>;
+	}
+
 	return (
 		<p
 			className={

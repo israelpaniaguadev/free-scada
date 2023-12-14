@@ -13,7 +13,7 @@ const Label = ({ children, ...props }: Props) => {
 		<label
 			{...props}
 			className={
-				"text-xs text-gray-300 font-bold"
+				"text-sm text-gray-300 font-bold m-2"
 			}
 		>
 			{children}

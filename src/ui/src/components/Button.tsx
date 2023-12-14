@@ -10,7 +10,7 @@ const Button = ({ children, ...props }: Props) => {
 			{...props}
 			className={
 				"text-gray-300 text-sm p-2 w-fit h-auto bg-black rounded-md border-2 border-gray-300 " +
-				"hover:text-white hover:border-white"
+				"hover:text-white hover:border-white flex justify-center items-center"
 			}
 		>
 			{children}

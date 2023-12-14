@@ -1,16 +1,14 @@
-type Props = React.ButtonHTMLAttributes<HTMLButtonElement>;
+type Props = React.InputHTMLAttributes<HTMLInputElement>;
 
-const Button = ({ children, ...props }: Props) => {
+const Input = (props: Props) => {
 	return (
-		<button
+		<input
 			{...props}
 			className={
-				""
+				"m-2 p-2 bg-black text-sm text-gray-300 rounded-md border-2 border-gray-300"
 			}
-		>
-			{children}
-		</button>
+		/>
 	);
 };
 
-export default Button;
+export default Input;
