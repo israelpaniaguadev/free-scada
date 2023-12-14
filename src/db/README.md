@@ -1,0 +1,2 @@
+# Database (DB).
+The main database is planned to be built with [MySQL](https://dev.mysql.com), meanwhile the local ones are planned to be made with [Redis](https://redis.io) or [SQLite](https://sqlite.org). 
