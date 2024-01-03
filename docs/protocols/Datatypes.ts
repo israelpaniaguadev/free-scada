@@ -87,3 +87,9 @@ export type Encoding =
 export type Char = {
   type: "char";
 } & Encoding;
+
+export type String = Encoding &
+  LineEnd & {
+    type: "string";
+    length: number;
+  };
