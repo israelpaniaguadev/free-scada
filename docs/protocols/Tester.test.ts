@@ -7,6 +7,30 @@ describe("serializeNumber()", function () {
     let buffer = new ArrayBuffer(1);
     expect(serializeNumber(0)).toEqual(buffer);
   });
+  test("(1) => ArrayBuffer[1]< 01 >", function () {
+    let buffer = new ArrayBuffer(1);
+    let view = new DataView(buffer);
+    view.setUint8(0, 1);
+    expect(serializeNumber(1)).toEqual(buffer);
+  });
+  test("(100) => ArrayBuffer[1]< 100 >", function () {
+    let buffer = new ArrayBuffer(1);
+    let view = new DataView(buffer);
+    view.setUint8(0, 100);
+    expect(serializeNumber(100)).toEqual(buffer);
+  });
+  test("(256, 2) => ArrayBuffer[1]< 01 00 >", function () {
+    let buffer = new ArrayBuffer(2);
+    let view = new DataView(buffer);
+    view.setUint16(0, 256);
+    expect(serializeNumber(256, 2)).toEqual(buffer);
+  });
+  test("(-256, 2) => ArrayBuffer[1]< 01 00 >", function () {
+    let buffer = new ArrayBuffer(2);
+    let view = new DataView(buffer);
+    view.setUint16(0, -256);
+    expect(serializeNumber(-256, 2)).toEqual(buffer);
+  });
 });
 
 describe("serializeString()", function () {
