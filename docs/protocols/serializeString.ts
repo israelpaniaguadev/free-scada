@@ -1,39 +1,46 @@
+import { joinArrayBuffers } from "./joinArrayBuffers";
+import { serializeNumber } from "./serializeNumber";
+
 export function serializeString(
   string: string,
   encoding: "utf8" | "utf16" | "utf32" | "ascii" = "utf8",
-  endianness: "BE" | "LE" = "BE"
+  endianness: boolean = false
 ): ArrayBuffer {
   // TODO: Serialization of number type.
+  let charSize = 1;
   let size = 1;
   if (encoding == "utf16") {
-    size += string.length * 2;
-  } else if (encoding == "utf32") {
-    size += string.length * 4;
-  } else {
-    size += string.length;
+    charSize = 2;
   }
-  let ed: boolean;
-  if (endianness == "BE") {
-    ed = false;
-  } else {
-    ed = true;
+  if (encoding == "utf32") {
+    charSize = 4;
   }
+  size = string.length * charSize;
   let buffer = new ArrayBuffer(size);
   let view = new DataView(buffer);
-  view.setUint8(0, size - 1);
+  let sizeField = serializeNumber(size, 4, true);
   if (string.length == 0) {
     return buffer;
   }
   for (let i = 0; i < string.length; i++) {
     if (encoding == "utf16") {
-      view.setUint16(i * 2 + 1, string.charCodeAt(i), ed);
+      view.setUint16(
+        buffer.byteLength - 1 - i * charSize,
+        string.charCodeAt(string.length - 1 - i),
+        endianness
+      );
       continue;
     }
     if (encoding == "utf32") {
-      view.setUint32(i * 4 + 1, string.charCodeAt(i), ed);
+      view.setUint32(
+        buffer.byteLength - 1 - i * charSize,
+        string.charCodeAt(string.length - 1 - i),
+        endianness
+      );
       continue;
     }
-    view.setUint8(i + 1, string.charCodeAt(i));
+    view.setUint8(buffer.byteLength - 1 - i, string.charCodeAt(i));
   }
-  return buffer;
+
+  return joinArrayBuffers([sizeField, buffer]);
 }
