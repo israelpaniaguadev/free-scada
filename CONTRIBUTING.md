@@ -46,3 +46,8 @@ Once there, you should be asked to open a **Pull Request** and open it.
 Use a descriptive tittle and describe the changes you made. Then finish your PR and the 
 mantainer will aprove or disaprove your PR.
 
+## To the mantainers only
+If you aprove the pull and merge request of a contributor, add its username to the 
+[`CONTRIBUTORS.md`](./CONTRIBUTORS.md) file. 
+
+
