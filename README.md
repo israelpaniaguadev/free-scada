@@ -32,3 +32,5 @@ philosophy.
 What does a FREE SCADA means? It means to be fully documented, easily adaptable to fit the needs of every user and 
 fully transparent in its development. No more.
 
+## CONTRIBUTING
+See the [CONTRIBUTING guide](./CONTRIBUTING.md) to know how to collaborate with the project.
