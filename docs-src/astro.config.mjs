@@ -4,7 +4,7 @@ import starlight from '@astrojs/starlight';
 // https://astro.build/config
 export default defineConfig({
   site: "https://jakkunight.github.io",
-  base: "/free-scada"
+  base: "/free-scada",
 	integrations: [
 		starlight({
 			title: 'Free SCADA Docs',
@@ -16,7 +16,7 @@ export default defineConfig({
 					label: 'Guides',
 					items: [
 						// Each item here is one entry in the navigation menu.
-						{ label: 'Get Started', link: '/guides/get-started/' },
+						{ label: 'Get Started', link: '/free-scada/guides/get-started/' },
 					],
 				},
 				{
