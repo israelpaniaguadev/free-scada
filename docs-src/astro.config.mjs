@@ -3,6 +3,8 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://jakkunight.github.io",
+  base: "/free-scada"
 	integrations: [
 		starlight({
 			title: 'Free SCADA Docs',
