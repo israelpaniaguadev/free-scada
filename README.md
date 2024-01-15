@@ -1,36 +1,54 @@
-# free-scada
-For FREE SCADA development without headaches.
+# Starlight Starter Kit: Basics
 
-## Philosophy
-### Architecture: Decentralized, local-first
-Aquisition should be done locally first, to prevent data loss and make the system modular. By decentralizing the 
-system, a failure will not be spreaded across the whole system, making easier to repair the issues and focus the 
-time and effort where they are needed, instead of wasting them in finding the errors.
+[![Built with Starlight](https://astro.badg.es/v2/built-with-starlight/tiny.svg)](https://starlight.astro.build)
 
-### Modelling: Model once, extend everywhere
-A transformer does the same everywere. A motor does the same everywhere. They can be modeled once and extended when 
-needed. Adopting a standard is crucial for mantainning certain retrocompatibility, so the system can be mantained 
-easily without much effort. If the device is too complex, it can be broken down into simpler devices that, again, 
-can be modelled once and extended when needed.
+```
+npm create astro@latest -- --template starlight
+```
 
-### Integrations: Even the protocols can be modeled
-Even if we wire things via Ethernet RJ-45 or Serial Port RS-232, a bunch of bits are still a bunch of bits, nothing 
-more than that. A protocol is just a set of rules that tells to every part in the communication what those bits aims 
-to communicate. Following the design philosophy of "model once, extend everywhere", a device model should be extended 
-with a protocol, breaking the limitations of the traditional modelling by adopting a composition/inheritance approach.
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/starlight/tree/main/examples/basics)
+[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/starlight/tree/main/examples/basics)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fwithastro%2Fstarlight%2Ftree%2Fmain%2Fexamples%2Fbasics&project-name=my-starlight-docs&repository-name=my-starlight-docs)
 
-### Security: The system stands up against everything
-Accidents and disasters are always a real risk. Even though, the system should keep the data safe at every moment 
-no matter what. The system aims to restrict the access to the data by applying an access level system.
+> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
 
-### User Experience: Automation-first
-The system aims to generate the user interface with the data contained in the model automatically. No UI dessign is 
-needed to be done by hand. Only the most specific modifications are allowed to be done, following the modelling 
-philosophy.
+## 🚀 Project Structure
 
-### License: FREE!
-What does a FREE SCADA means? It means to be fully documented, easily adaptable to fit the needs of every user and 
-fully transparent in its development. No more.
+Inside of your Astro + Starlight project, you'll see the following folders and files:
 
-## CONTRIBUTING
-See the [CONTRIBUTING guide](./CONTRIBUTING.md) to know how to collaborate with the project.
+```
+.
+├── public/
+├── src/
+│   ├── assets/
+│   ├── content/
+│   │   ├── docs/
+│   │   └── config.ts
+│   └── env.d.ts
+├── astro.config.mjs
+├── package.json
+└── tsconfig.json
+```
+
+Starlight looks for `.md` or `.mdx` files in the `src/content/docs/` directory. Each file is exposed as a route based on its file name.
+
+Images can be added to `src/assets/` and embedded in Markdown with a relative link.
+
+Static assets, like favicons, can be placed in the `public/` directory.
+
+## 🧞 Commands
+
+All commands are run from the root of the project, from a terminal:
+
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `npm install`             | Installs dependencies                            |
+| `npm run dev`             | Starts local dev server at `localhost:4321`      |
+| `npm run build`           | Build your production site to `./dist/`          |
+| `npm run preview`         | Preview your build locally, before deploying     |
+| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
+| `npm run astro -- --help` | Get help using the Astro CLI                     |
+
+## 👀 Want to learn more?
+
+Check out [Starlight’s docs](https://starlight.astro.build/), read [the Astro documentation](https://docs.astro.build), or jump into the [Astro Discord server](https://astro.build/chat).
