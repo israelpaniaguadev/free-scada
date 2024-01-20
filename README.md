@@ -1,6 +1,9 @@
 # free-scada
 For FREE SCADA development without headaches.
 
+## Docs
+Go stright to the [docs](https://jakkunight.github.io/free-scada)
+
 ## Philosophy
 ### Architecture: Decentralized, local-first
 Aquisition should be done locally first, to prevent data loss and make the system modular. By decentralizing the 
@@ -32,5 +35,4 @@ philosophy.
 What does a FREE SCADA means? It means to be fully documented, easily adaptable to fit the needs of every user and 
 fully transparent in its development. No more.
 
-## CONTRIBUTING
-See the [CONTRIBUTING guide](./CONTRIBUTING.md) to know how to collaborate with the project.
+
