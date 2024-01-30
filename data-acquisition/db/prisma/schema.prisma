@@ -1,16 +1,24 @@
-//// WARN: This is a LOCAL DATABASE schema!
-//// NOTE: Basic config
+//// WARN: 
+//// This is a LOCAL DATABASE schema!
+
+//// NOTE:
+//// Basic config
 
 generator client {
   provider = "prisma-client-js"
 }
+ 
+//// WARN:
+//// Do not forget to create the ".env" file after 
+//// each repo sync/clone!
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-//// NOTE: The protocols table only holds a supported 
+//// NOTE: 
+//// The protocols table only holds a supported 
 //// protocols list. Is up to the final user to 
 //// choose which protocols to include or exclude.
 
@@ -22,8 +30,11 @@ model Protocol {
   @@index([id, name])
 }
 
-//// WARN: Need to solve the remote-local mapping.
-//// NOTE: The final user should implement the 
+//// FIX: 
+//// Need to solve the remote-local mapping.
+
+//// NOTE:
+//// The final user should implement the 
 //// device details. The devices table it's just a 
 //// 'header' to make the Free-SCADA system independent 
 //// from the hardware devices, as an OS is independent 
@@ -35,11 +46,16 @@ model Device {
   description String @default("-")
   manufacturer String @default("-")
   model String @default("-")
+  deviceSupportedMeasure DeviceSupportedMeasure[]
+  deviceSupportedState DeviceSupportedState[]
+  deviceSupportedSignal DeviceSupportedSignal[]
+  deviceSupportedAlarm DeviceSupportedAlarm[]
 
   @@index([id, name])
 }
 
-//// NOTE: Is up to the final user to define and create the 
+//// NOTE: 
+//// Is up to the final user to define and create the 
 //// specific alarms to use with the system. If a specific 
 //// value needs to be attached, it may be added to the 
 //// database and the corresponding implementation class. 
@@ -48,11 +64,13 @@ model Alarm {
   id Int @id @default(autoincrement())
   name String @unique
   description String @default("-")
+  deviceSupportedAlarm DeviceSupportedAlarm[]
 
   @@index([id, name])
 }
 
-//// NOTE: Is up to the final user to define and create the 
+//// NOTE: 
+//// Is up to the final user to define and create the 
 //// specific signals for each device. If a specific value 
 //// needs to be attached to the signal, like signal codes or 
 //// something, they should be added to the database and 
@@ -63,11 +81,13 @@ model Signal {
   id Int @id @default(autoincrement())
   name String @unique
   description String @default("-")
+  deviceSupportedSignal DeviceSupportedSignal[]
 
   @@index([id, name])
 }
 
-//// NOTE: Is up to the final user to define and create the 
+//// NOTE: 
+//// Is up to the final user to define and create the 
 //// specific states for each device. If a special value, like 
 //// a state flag, is needed, it must be added to the database 
 //// and implemented into an implementation of the 
@@ -77,27 +97,32 @@ model State {
   id Int @id @default(autoincrement())
   name String @unique
   description String @default("-")
+  deviceSupportedState DeviceSupportedState[]
 
   @@index([id, name])
 }
 
-//// NOTE: Is up to the final user to create and define the specific 
+//// NOTE: 
+//// Is up to the final user to create and define the specific 
 //// measures retrieved from each device.
 
 model Measure {
   id Int @id @default(autoincrement())
   measure String @unique
   unit String @unique
+  deviceSupportedMeasure DeviceSupportedMeasure[]
 
   @@index([id, measure, unit])
 }
 
-//// INFO: Relationships implementation
+//// INFO: 
+//// Relationships implementation
 
-//// NOTE: The retrieved measures for each device type.
+//// NOTE: 
+//// The retrieved measures for each device type.
 //// Is up to the final user to configure this table.
 
-model deviceSupportedMeasure {
+model DeviceSupportedMeasure {
   id Int @id @default(autoincrement())
   deviceId Int
   measureId Int
@@ -107,4 +132,50 @@ model deviceSupportedMeasure {
   @@index([deviceId, measureId])
 }
 
-//// NOTE: The 
+//// NOTE:
+//// The retrieved states for each device.
+//// Is up to the final user to configure this table.
+
+model DeviceSupportedState {
+  id Int @id @default(autoincrement())
+  deviceId Int
+  stateId Int
+  
+  device Device @relation(fields: [deviceId], references: [id])
+  state State @relation(fields: [stateId], references: [id])
+  @@index([deviceId, stateId])
+}
+
+//// NOTE:
+//// The retrieved signals for each device.
+//// Is up to the final user to configure this table.
+
+model DeviceSupportedSignal {
+  id Int @id @default(autoincrement())
+  deviceId Int
+  signalId Int
+
+  device Device @relation(fields: [deviceId], references: [id])
+  signal Signal @relation(fields: [signalId], references: [id])
+  @@index([deviceId, signalId])
+}
+
+//// NOTE:
+//// The retrieved alarms for each device.
+//// Is up to the final user to configure this table.
+
+model DeviceSupportedAlarm {
+  id Int @id @default(autoincrement())
+  deviceId Int
+  alarmId Int
+
+  device Device @relation(fields: [deviceId], references: [id])
+  alarm Alarm @relation(fields: [alarmId], references: [id])
+  @@index([deviceId, alarmId])
+}
+
+//// TODO:
+//// Add the event log.
+
+
+
