@@ -1,0 +1,152 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// NOTE: Core config
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// NOTE: Basic models
+
+model stations {
+  id Int @id @default(autoincrement())
+  location String @unique
+  abbreviation String @unique
+  mainIpAddress String @unique
+  secondIpAddress String @unique
+  @@index([abbreviation, location, mainIpAddress, secondIpAddress, id])
+}
+
+model protocols {
+  id Int @id @default(autoincrement())
+  name String @unique
+  transportProtocol String @unique @default("TCP/IP")
+  physicalInterface String @unique @default("Ethernet")
+  @@index([id, name])
+}
+
+model devices {
+  id Int @id @default(autoincrement())
+  name String @unique
+  description String
+  details String
+  manufacturer String @default("UNKNOWN MANUFACTURER")
+  model String @default("UNKNOWN DEVICE MODEL")
+  station stations @relation(fields: ["stationId"], references: ["id"])
+  stationId Int
+  @@index([name, id, stationId])
+}
+
+model alarms {
+  id Int @default(autoincrement())
+  name String @unique
+  description String
+  @@index([id, name])
+}
+
+model signals {
+  id Int @default(autoincrement())
+  name String @unique
+  description String
+  @@index([id, name])
+}
+
+model states {
+  id Int @default(autoincrement())
+  name String @unique
+  description String
+  @@index([id, name])
+}
+
+model measures {
+  id Int @default(autoincrement())
+  magnitude String @unique
+  unit String
+  @@index([id, magnitude])
+}
+
+// NOTE: Supported data
+
+model devicesSupportedProtocols {
+  id Int @id @default(autoincrement())
+  device devices @relation(fields: ["deviceId"], references: ["id"])
+  deviceId Int
+  supportedProtocol protocols @relation(fields: ["protocolId"], references: ["id"])
+  protocolId Int
+}
+
+model deviceSupportedAlarms {
+  id Int @id @default(autoincrement())
+  device devices @relation(fields: ["deviceId"], references: ["id"])
+  deviceId Int
+  supportedAlarm alarms @relation(fields: ["alarmId"], references: ["id"])
+  alarmId Int
+}
+
+model deviceSupportedSignals {
+  id Int @id @default(autoincrement())
+  device devices @relation(fields: ["deviceId"], references: ["id"])
+  deviceId Int
+  supportedSignal signals @relation(fields: ["signalId"], references: ["id"])
+  signalId Int
+}
+
+model deviceSupportedStates {
+  id Int @id @default(autoincrement())
+  device devices @relation(fields: ["deviceId"], references: ["id"])
+  deviceId Int
+  supportedState states @relation(fields: ["stateId"], references: ["id"])
+  stateId Int
+}
+
+model deviceSupportedMeasures {
+  id Int @id @default(autoincrement())
+  device devices @relation(fields: ["deviceId"], references: ["id"])
+  deviceId Int
+  supportedMeasure measures @relation(fields: ["measureId"], references: ["id"])
+  measureId Int
+}
+
+// NOTE: Event log
+
+model emitedAlarms {
+  id Int @id @default(autoincrement())
+  date DateTime @default(now())
+  deviceSupportedAlarm deviceSupportedAlarms @relation(fields: ["deviceId", "alarmId"], references: ["deviceId", "alarmId"])
+  deviceId Int
+  alarmId Int
+}
+
+model emitedSignals {
+  id Int @id @default(autoincrement())
+  date DateTime @default(now())
+  deviceSupportedSignal deviceSupportedSignals @relation(fields: ["deviceId", "signalId"], references: ["deviceId", "signalId"])
+  deviceId Int
+  signalId Int
+}
+
+model changedStates {
+  id Int @id @default(autoincrement())
+  date DateTime @default(now())
+  deviceSupportedInitialState deviceSupportedStates @relation(fields: ["deviceId", "initialStateId"], references: ["deviceId", "stateId"])
+  deviceSupportedActualState deviceSupportedStates @relation(fields: ["deviceId", "actualStateId"], references: ["deviceId", "stateId"])
+  deviceId Int
+  initialStateId Int
+  actualStateId Int
+}
+
+model acquiredMeasures {
+  id Int @id @default(autoincrement())
+  date DateTime @default(now())
+  deviceSupportedAlarm deviceSupportedMeasures @relation(fields: ["deviceId", "measureId"], references: ["deviceId", "measureId"])
+  deviceId Int
+  measureId Int
+  value Decimal @default(0.000)
+}
+
