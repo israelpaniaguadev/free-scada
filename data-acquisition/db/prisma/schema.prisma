@@ -58,6 +58,13 @@ model Device {
   @@index([id, name])
 }
 
+//// NOTE:
+//// Is up to the final user to define and create the 
+//// specific protocols to use with the system. 
+//// Remember to implement the DeviceCommonInterface with 
+//// each new protocol that you want to support. Free-SCADA 
+//// already supports a few protocols by default.
+
 //// NOTE: 
 //// Is up to the final user to define and create the 
 //// specific alarms to use with the system. If a specific 
