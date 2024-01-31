@@ -26,6 +26,7 @@ model Protocol {
   id Int @id @default(autoincrement())
   name String @unique
   details String @default("N/A")
+  deviceSupportedProtocol DeviceSupportedProtocol[]
 
   @@index([id, name])
 }
@@ -46,6 +47,7 @@ model Device {
   description String @default("-")
   manufacturer String @default("-")
   model String @default("-")
+  deviceSupportedProtocol DeviceSupportedProtocol[]
   deviceSupportedMeasure DeviceSupportedMeasure[]
   deviceSupportedState DeviceSupportedState[]
   deviceSupportedSignal DeviceSupportedSignal[]
@@ -64,6 +66,16 @@ model Device {
 //// Remember to implement the DeviceCommonInterface with 
 //// each new protocol that you want to support. Free-SCADA 
 //// already supports a few protocols by default.
+
+model DeviceSupportedProtocol {
+  id Int @id @default(autoincrement())
+  deviceId Int
+  protocolId Int
+
+  device Device @relation(fields: [deviceId], references: [id])
+  protocol Protocol @relation(fields: [protocolId], references: [id])
+  @@index([deviceId, protocolId])
+}
 
 //// NOTE: 
 //// Is up to the final user to define and create the 
