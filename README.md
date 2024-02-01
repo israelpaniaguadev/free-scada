@@ -2,7 +2,7 @@
 For FREE SCADA development without headaches.
 
 ## Docs
-Go stright to the [docs](https://jakkunight.github.io/free-scada)
+Go stright to the [docs](https://jakkunight.github.io/free-scada-docs)
 
 ## Philosophy
 ### Architecture: Decentralized, local-first
