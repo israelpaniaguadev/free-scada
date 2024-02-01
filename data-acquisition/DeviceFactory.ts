@@ -1,7 +1,14 @@
 // TODO: 
 // Create device factory to implement DI pattern in the module.
 
-import type { DeviceCommonInterface, DeviceCommonParams, Measure, Alarm, Signal, State } from "./DeviceCommonInterface";
+import type {
+  DeviceCommonInterface,
+  DeviceCommonParams,
+  Measure,
+  Alarm,
+  Signal,
+  State
+} from "./DeviceCommonInterface";
 
 // TODO:
 // Create DeviceCommonInterface implementations for every protocol.
