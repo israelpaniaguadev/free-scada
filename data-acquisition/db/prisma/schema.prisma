@@ -1,0 +1,253 @@
+//// WARN: 
+//// This is a LOCAL DATABASE schema!
+
+//// NOTE:
+//// Basic config
+
+generator client {
+  provider = "prisma-client-js"
+}
+ 
+//// WARN:
+//// Do not forget to create the ".env" file after 
+//// each repo sync/clone!
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+//// NOTE: 
+//// The protocols table only holds a supported 
+//// protocols list. Is up to the final user to 
+//// choose which protocols to include or exclude.
+
+model Protocol {
+  id Int @id @default(autoincrement())
+  name String @unique
+  details String @default("N/A")
+  deviceSupportedProtocol DeviceSupportedProtocol[]
+
+  @@index([id, name])
+}
+
+//// FIX: 
+//// Need to solve the remote-local mapping.
+
+//// NOTE:
+//// The final user should implement the 
+//// device details. The devices table it's just a 
+//// 'header' to make the Free-SCADA system independent 
+//// from the hardware devices, as an OS is independent 
+//// from the computer's hardware.
+
+model Device {
+  id Int @id @default(autoincrement())
+  name String @unique
+  description String @default("-")
+  manufacturer String @default("-")
+  model String @default("-")
+  deviceSupportedProtocol DeviceSupportedProtocol[]
+  deviceSupportedMeasure DeviceSupportedMeasure[]
+  deviceSupportedState DeviceSupportedState[]
+  deviceSupportedSignal DeviceSupportedSignal[]
+  deviceSupportedAlarm DeviceSupportedAlarm[]
+  updatedState UpdatedSate[]
+  updatedMeasure UpdatedMeasure[]
+  emitedSignal EmitedSignal[]
+  emitedAlarm EmitedAlarm[]
+
+  @@index([id, name])
+}
+
+//// NOTE:
+//// Is up to the final user to define and create the 
+//// specific protocols to use with the system. 
+//// Remember to implement the DeviceCommonInterface with 
+//// each new protocol that you want to support. Free-SCADA 
+//// already supports a few protocols by default.
+
+model DeviceSupportedProtocol {
+  id Int @id @default(autoincrement())
+  deviceId Int
+  protocolId Int
+
+  device Device @relation(fields: [deviceId], references: [id])
+  protocol Protocol @relation(fields: [protocolId], references: [id])
+  @@index([deviceId, protocolId])
+}
+
+//// NOTE: 
+//// Is up to the final user to define and create the 
+//// specific alarms to use with the system. If a specific 
+//// value needs to be attached, it may be added to the 
+//// database and the corresponding implementation class. 
+
+model Alarm {
+  id Int @id @default(autoincrement())
+  name String @unique
+  description String @default("-")
+  deviceSupportedAlarm DeviceSupportedAlarm[]
+  emitedAlarm EmitedAlarm[]
+
+  @@index([id, name])
+}
+
+//// NOTE: 
+//// Is up to the final user to define and create the 
+//// specific signals for each device. If a specific value 
+//// needs to be attached to the signal, like signal codes or 
+//// something, they should be added to the database and 
+//// implement the DeviceCommonInterface to work with that 
+//// specific value.
+
+model Signal {
+  id Int @id @default(autoincrement())
+  name String @unique
+  description String @default("-")
+  deviceSupportedSignal DeviceSupportedSignal[]
+  emitedSignal EmitedSignal[]
+
+  @@index([id, name])
+}
+
+//// NOTE: 
+//// Is up to the final user to define and create the 
+//// specific states for each device. If a special value, like 
+//// a state flag, is needed, it must be added to the database 
+//// and implemented into an implementation of the 
+//// DeviceCommonInterface.
+
+model State {
+  id Int @id @default(autoincrement())
+  name String @unique
+  description String @default("-")
+  deviceSupportedState DeviceSupportedState[]
+  updatedState UpdatedSate[]
+
+  @@index([id, name])
+}
+
+//// NOTE: 
+//// Is up to the final user to create and define the specific 
+//// measures retrieved from each device.
+
+model Measure {
+  id Int @id @default(autoincrement())
+  measure String @unique
+  unit String @unique
+  deviceSupportedMeasure DeviceSupportedMeasure[]
+  updatedMeasure UpdatedMeasure[]
+
+  @@index([id, measure, unit])
+}
+
+//// INFO: 
+//// Relationships implementation
+
+//// NOTE: 
+//// The retrieved measures for each device type.
+//// Is up to the final user to configure this table.
+
+model DeviceSupportedMeasure {
+  id Int @id @default(autoincrement())
+  deviceId Int
+  measureId Int
+
+  device Device @relation(fields: [deviceId], references: [id])
+  measure Measure @relation(fields: [measureId], references: [id])
+  @@index([deviceId, measureId])
+}
+
+//// NOTE:
+//// The retrieved states for each device.
+//// Is up to the final user to configure this table.
+
+model DeviceSupportedState {
+  id Int @id @default(autoincrement())
+  deviceId Int
+  stateId Int
+  
+  device Device @relation(fields: [deviceId], references: [id])
+  state State @relation(fields: [stateId], references: [id])
+  @@index([deviceId, stateId])
+}
+
+//// NOTE:
+//// The retrieved signals for each device.
+//// Is up to the final user to configure this table.
+
+model DeviceSupportedSignal {
+  id Int @id @default(autoincrement())
+  deviceId Int
+  signalId Int
+
+  device Device @relation(fields: [deviceId], references: [id])
+  signal Signal @relation(fields: [signalId], references: [id])
+  @@index([deviceId, signalId])
+}
+
+//// NOTE:
+//// The retrieved alarms for each device.
+//// Is up to the final user to configure this table.
+
+model DeviceSupportedAlarm {
+  id Int @id @default(autoincrement())
+  deviceId Int
+  alarmId Int
+
+  device Device @relation(fields: [deviceId], references: [id])
+  alarm Alarm @relation(fields: [alarmId], references: [id])
+  @@index([deviceId, alarmId])
+}
+
+//// NOTE:
+//// These are the event logs. Every log must be registered before being accessed.
+//// Is up to the "data-access" module to provide the API to access the database data.
+//// FIX: 
+//// Need to fix the remote-local sync problem.
+
+model EmitedAlarm {
+  id Int @id @default(autoincrement())
+  datetime DateTime @default(now())
+  deviceId Int
+  alarmId Int
+
+  device Device @relation(fields: [deviceId], references: [id])
+  alarm Alarm @relation(fields: [alarmId], references: [id])
+  @@index([datetime, deviceId, alarmId])
+}
+
+model EmitedSignal {
+  id Int @id @default(autoincrement())
+  datetime DateTime @default(now())
+  deviceId Int
+  signalId Int
+
+  device Device @relation(fields: [deviceId], references: [id])
+  signal Signal @relation(fields: [signalId], references: [id])
+  @@index([datetime, deviceId, signalId])
+}
+
+model UpdatedSate {
+  id Int @id @default(autoincrement())
+  datetime DateTime @default(now())
+  deviceId Int
+  newStateId Int
+
+  device Device @relation(fields: [deviceId], references: [id])
+  state State @relation(fields: [newStateId], references: [id])
+  @@index([datetime, deviceId, newStateId])
+}
+
+model UpdatedMeasure {
+  id Int @id @default(autoincrement())
+  datetime DateTime @default(now())
+  deviceId Int
+  measureId Int
+
+  device Device @relation(fields: [deviceId], references: [id])
+  measure Measure @relation(fields: [measureId], references: [id])
+  @@index([datetime, deviceId, measureId])
+}
+
